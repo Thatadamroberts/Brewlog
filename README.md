@@ -36,6 +36,12 @@ npm run preview
 
 The `dist/` folder is a static site and can be served from anywhere. Offline support and "install to home screen" need HTTPS (or `localhost`).
 
+## Live app
+
+https://thatadamroberts.github.io/Brewlog/
+
+Every push to `main` builds the app and publishes it to GitHub Pages (`.github/workflows/deploy.yml`). On your phone, open the link and use **Add to Home Screen** (Safari share menu, or the Chrome menu) to install it. Your data still stays on your device. GitHub only hosts the app's code.
+
 ## Tech
 
 - React + TypeScript + Vite
