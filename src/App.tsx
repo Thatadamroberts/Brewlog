@@ -35,7 +35,7 @@ export default function App() {
           <span aria-hidden="true">📊</span>Stats
         </NavLink>
         <NavLink to="/settings">
-          <span aria-hidden="true">⚙︎</span>Data
+          <span aria-hidden="true">⚙︎</span>Settings
         </NavLink>
       </nav>
     </HashRouter>

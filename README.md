@@ -62,4 +62,4 @@ src/
 
 ## Data and privacy
 
-Your data lives in this browser's storage for the site. Clearing site data, or uninstalling the app, deletes it, so use **Data → Export backup** regularly. Data is not shared between browsers or devices unless you export and import a backup.
+Your data lives in this browser's storage for the site. Clearing site data, or uninstalling the app, deletes it, so use **Settings → Export backup** regularly. Data is not shared between browsers or devices unless you export and import a backup.

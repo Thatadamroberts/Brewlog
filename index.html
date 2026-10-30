@@ -5,7 +5,14 @@
     <link rel="icon" type="image/svg+xml" href="/icon.svg" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-    <meta name="theme-color" content="#6f4e37" />
+    <meta name="theme-color" content="#ffffff" />
+    <script>
+      // Apply the saved theme before first paint to avoid a flash of the wrong colours.
+      try {
+        var t = localStorage.getItem('brewlog.theme')
+        if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t
+      } catch (e) {}
+    </script>
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="description" content="Log the coffees you drink and the beans you buy. Stored on your device only." />
     <title>Brewlog</title>

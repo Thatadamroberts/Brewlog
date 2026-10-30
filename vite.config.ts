@@ -15,8 +15,8 @@ export default defineConfig({
         name: 'Brewlog',
         short_name: 'Brewlog',
         description: 'Log the coffees you drink and the beans you buy.',
-        theme_color: '#6f4e37',
-        background_color: '#faf6f1',
+        theme_color: '#2563eb',
+        background_color: '#ffffff',
         display: 'standalone',
         start_url: '.',
         icons: [

@@ -1,16 +1,17 @@
 :root {
-  --bg: #faf6f1;
+  --bg: #ffffff;
   --surface: #ffffff;
-  --text: #2b1d14;
-  --muted: #7a6758;
-  --border: #e8ddd1;
-  --accent: #6f4e37;
+  --input: #f7f8fa;
+  --text: #111827;
+  --muted: #6b7280;
+  --border: #e3e6eb;
+  --accent: #2563eb;
   --accent-text: #ffffff;
-  --accent-soft: #f3e5d0;
-  --bean: #b5651d;
-  --danger: #b3261e;
+  --accent-soft: #e8effd;
+  --bean: #c2700c;
+  --danger: #c62828;
   --radius: 14px;
-  color-scheme: light dark;
+  color-scheme: light;
   font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
   line-height: 1.45;
   color: var(--text);
@@ -18,19 +19,36 @@
   -webkit-font-smoothing: antialiased;
 }
 
+/* Dark follows the device unless the user picked Light or Dark in the app. */
 @media (prefers-color-scheme: dark) {
-  :root {
-    --bg: #17110d;
-    --surface: #221913;
-    --text: #f2e8de;
-    --muted: #ab988a;
-    --border: #3a2c22;
-    --accent: #d9a273;
-    --accent-text: #1b120c;
-    --accent-soft: #3a2a1e;
-    --bean: #e0a060;
+  :root:not([data-theme='light']) {
+    --bg: #0b1426;
+    --surface: #13203a;
+    --input: #0f1a30;
+    --text: #e6edf8;
+    --muted: #94a3bd;
+    --border: #24365a;
+    --accent: #6ea8ff;
+    --accent-text: #0b1426;
+    --accent-soft: #1c3260;
+    --bean: #f2a93b;
     --danger: #ff8a80;
+    color-scheme: dark;
   }
+}
+:root[data-theme='dark'] {
+  --bg: #0b1426;
+  --surface: #13203a;
+  --input: #0f1a30;
+  --text: #e6edf8;
+  --muted: #94a3bd;
+  --border: #24365a;
+  --accent: #6ea8ff;
+  --accent-text: #0b1426;
+  --accent-soft: #1c3260;
+  --bean: #f2a93b;
+  --danger: #ff8a80;
+  color-scheme: dark;
 }
 
 * { box-sizing: border-box; }
@@ -92,7 +110,7 @@ img { display: block; max-width: 100%; }
 input, select, textarea {
   width: 100%; min-height: 44px; padding: 10px 12px;
   border: 1px solid var(--border); border-radius: 10px;
-  background: var(--surface); color: var(--text); font: inherit; font-size: 16px;
+  background: var(--input); color: var(--text); font: inherit; font-size: 16px;
 }
 textarea { resize: vertical; }
 input:focus, select:focus, textarea:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
@@ -147,7 +165,7 @@ fieldset.panel { min-width: 0; }
 .photo-picker img { width: 100%; max-height: 360px; object-fit: cover; border-radius: var(--radius); }
 .photo-empty {
   width: 100%; height: 160px; border: 2px dashed var(--border); border-radius: var(--radius);
-  background: var(--surface); color: var(--muted); font: inherit; font-size: 1rem; cursor: pointer;
+  background: var(--input); color: var(--muted); font: inherit; font-size: 1rem; cursor: pointer;
 }
 .photo-actions { display: flex; gap: 8px; margin-top: 8px; }
 
@@ -171,3 +189,9 @@ dd { margin: 0; overflow-wrap: anywhere; }
 .bar-track { height: 8px; border-radius: 4px; background: var(--accent-soft); overflow: hidden; }
 .bar-fill { display: block; height: 100%; border-radius: 4px; background: var(--accent); }
 .bar-num { font-weight: 700; min-width: 2ch; text-align: right; }
+.segmented { display: inline-flex; padding: 3px; gap: 3px; border: 1px solid var(--border); border-radius: 999px; background: var(--input); }
+.segmented button {
+  min-height: 38px; padding: 0 16px; border: 0; border-radius: 999px;
+  background: none; color: var(--muted); font: inherit; font-weight: 600; cursor: pointer;
+}
+.segmented button[aria-pressed='true'] { background: var(--accent); color: var(--accent-text); }

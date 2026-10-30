@@ -2,11 +2,13 @@ import { useLiveQuery } from 'dexie-react-hooks'
 import { useRef, useState } from 'react'
 import { exportBackup, importBackup } from '../backup'
 import { db, today } from '../db'
+import { getTheme, setTheme, type Theme } from '../theme'
 
 export function Settings() {
   const count = useLiveQuery(() => db.coffees.count(), [])
   const [message, setMessage] = useState('')
   const fileInput = useRef<HTMLInputElement>(null)
+  const [theme, setThemeState] = useState<Theme>(getTheme)
 
   async function onExport() {
     const blob = await exportBackup()
@@ -29,7 +31,25 @@ export function Settings() {
 
   return (
     <div className="settings">
-      <h1>Your data</h1>
+      <h1>Settings</h1>
+      <section className="panel">
+        <h2>Appearance</h2>
+        <div className="segmented" role="group" aria-label="Theme">
+          {(['system', 'light', 'dark'] as const).map((t) => (
+            <button
+              key={t}
+              type="button"
+              aria-pressed={theme === t}
+              onClick={() => {
+                setTheme(t)
+                setThemeState(t)
+              }}
+            >
+              {t[0].toUpperCase() + t.slice(1)}
+            </button>
+          ))}
+        </div>
+      </section>
       <section className="panel">
         <h2>Stored on this device only</h2>
         <p>
