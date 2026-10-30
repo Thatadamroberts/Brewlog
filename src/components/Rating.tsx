@@ -32,13 +32,16 @@ export function RatingInput({
         min={0}
         max={5}
         step={0.25}
+        aria-valuetext={value == null ? 'Not rated' : `${value} out of 5`}
         value={value ?? 0}
         onChange={(e) => {
           const v = Number(e.target.value)
           onChange(v === 0 ? null : v)
         }}
       />
-      {value == null ? <span className="muted">Not rated</span> : <RatingDisplay value={value} />}
+      <span className="rating-value" aria-hidden="true">
+        {value == null ? <span className="muted">Not rated</span> : <RatingDisplay value={value} />}
+      </span>
     </div>
   )
 }

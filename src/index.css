@@ -137,12 +137,20 @@ input:focus, select:focus, textarea:focus { outline: 2px solid var(--accent); ou
 }
 
 .rating { display: inline-flex; align-items: center; gap: 1px; }
-.rating-num { margin-left: 6px; font-weight: 700; font-size: 0.875rem; }
+.rating-num { margin-left: 6px; font-weight: 700; font-size: 0.875rem; font-variant-numeric: tabular-nums; }
 .bean-empty { fill: var(--border); }
 .bean-full { fill: var(--bean); }
 .bean-crease { stroke: var(--surface); stroke-width: 1.5; }
-.rating-input { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
-.rating-input input { flex: 1; min-width: 160px; padding: 0; accent-color: var(--accent); border: 0; background: none; }
+.rating-input { display: grid; grid-template-columns: minmax(0, 1fr) 136px; align-items: center; gap: 12px; }
+.rating-input input:focus:not(:focus-visible) { outline: none; }
+.rating-input input { width: 100%; padding: 0; accent-color: var(--accent); border: 0; background: none; }
+/* Fixed-width readout so the slider doesn't resize as the value changes. */
+.rating-value { display: flex; justify-content: flex-end; white-space: nowrap; }
+.rating-value .rating-num { min-width: 4ch; text-align: right; }
+@media (max-width: 360px) {
+  .rating-input { grid-template-columns: 1fr; gap: 6px; }
+  .rating-value { order: -1; justify-content: flex-start; min-height: 22px; }
+}
 
 .empty { text-align: center; padding: 48px 16px; }
 .empty-icon { font-size: 3rem; }
