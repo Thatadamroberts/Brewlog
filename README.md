@@ -40,7 +40,7 @@ The `dist/` folder is a static site and can be served from anywhere. Offline sup
 
 https://thatadamroberts.github.io/Brewlog/
 
-Every push to `main` builds the app and publishes it to GitHub Pages (`.github/workflows/deploy.yml`). On your phone, open the link and use **Add to Home Screen** (Safari share menu, or the Chrome menu) to install it. Your data still stays on your device. GitHub only hosts the app's code.
+Deploys are manual: on GitHub, go to **Actions → Deploy to GitHub Pages → Run workflow** to publish the current `main` (`.github/workflows/deploy.yml`). Pushing to `main` does not deploy. On your phone, open the link and use **Add to Home Screen** (Safari share menu, or the Chrome menu) to install it. Your data still stays on your device. GitHub only hosts the app's code.
 
 ## Tech
 
