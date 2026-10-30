@@ -2,13 +2,15 @@
 
 A check-in app for coffee, in the spirit of beer check-in apps. Log every cup you drink and every bag of beans you buy, with a photo, rating, and where it came from.
 
-**Local only.** Everything, including photos, is stored in your browser's IndexedDB on your own device. Nothing is uploaded anywhere.
+**Local only.** Everything, including photos, is stored in your browser's IndexedDB on your own device. Your coffee log is never uploaded. The map features send your location or search text to OpenStreetMap, only when you use them, to look up cafés and load map images.
 
 ## Features
 
 - **Check in a coffee**: type of coffee (espresso, flat white, pour over, beans…), date, and a 0–5 rating in quarter steps
 - **Bean information**: roaster, origin country and region, farm or producer, variety, process, roast level, roast date, tasting notes
 - **Where you got it**: place or seller, kind of place (café, roaster, online…), location, price and currency, quantity
+- **Tag a place on the map**: pick a nearby café, search for one, or drop a pin
+- **Nearby cafés** from OpenStreetMap, with your own ratings and visit counts for places you've been
 - **Photo** per check-in, resized on the device to keep storage small
 - **Feed** with search and sorting by date, rating, or price
 - **Log again** copies a coffee's bean and source details into a new check-in
@@ -47,6 +49,7 @@ Deploys are manual: on GitHub, go to **Actions → Deploy to GitHub Pages → Ru
 - React + TypeScript + Vite
 - [Dexie](https://dexie.org) over IndexedDB for storage (`src/db.ts`)
 - `vite-plugin-pwa` for the service worker and manifest
+- [Leaflet](https://leafletjs.com) with OpenStreetMap tiles; cafés from the [Overpass API](https://wiki.openstreetmap.org/wiki/Overpass_API), place search from [Nominatim](https://nominatim.org) (`src/geo.ts`)
 
 ## Project layout
 
@@ -56,8 +59,9 @@ src/
   image.ts         photo resizing and thumbnails
   backup.ts        JSON export/import
   options.ts       dropdown values and formatting
-  pages/           Feed, Detail, CoffeeForm, Stats, Settings
-  components/      rating and image helpers
+  geo.ts           location, café lookup, place search, distances
+  pages/           Feed, Nearby, Detail, CoffeeForm, Stats, Settings
+  components/      map, map picker, rating and image helpers
 ```
 
 ## Data and privacy

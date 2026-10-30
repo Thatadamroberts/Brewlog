@@ -56,6 +56,10 @@ export function Settings() {
           Brewlog keeps your {count ?? 0} coffee{count === 1 ? '' : 's'} and photos in this browser's local database.
           Nothing is uploaded. Clearing your browser's site data deletes them, so export a backup from time to time.
         </p>
+        <p>
+          Maps and café search use OpenStreetMap. When you use them, your location or search text is sent to
+          OpenStreetMap to look up places and load map images. Your coffee log itself is never sent.
+        </p>
       </section>
       <section className="panel">
         <h2>Backup</h2>

@@ -1,8 +1,11 @@
 import { useLiveQuery } from 'dexie-react-hooks'
+import type { ReactNode } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { BlobImage } from '../components/BlobImage'
+import { MapView } from '../components/MapView'
 import { RatingDisplay } from '../components/Rating'
 import { db } from '../db'
+import { mapsUrl } from '../geo'
 import { formatDate, formatPrice } from '../options'
 
 export function Detail() {
@@ -50,7 +53,21 @@ export function Detail() {
       </header>
 
       <Section title="Bean" rows={bean} />
-      <Section title="Where I got it" rows={source} />
+      <Section title="Where I got it" rows={source}>
+        {coffee.place && (
+          <div className="detail-map">
+            <MapView
+              center={coffee.place}
+              zoom={16}
+              interactive={false}
+              markers={[{ id: 'place', lat: coffee.place.lat, lon: coffee.place.lon, kind: 'selected' }]}
+            />
+            <a href={mapsUrl(coffee.place)} target="_blank" rel="noreferrer" className="btn btn-small">
+              📍 Open {coffee.place.name} in Maps
+            </a>
+          </div>
+        )}
+      </Section>
       {coffee.notes && (
         <section className="panel">
           <h2>Notes</h2>
@@ -73,9 +90,9 @@ export function Detail() {
   )
 }
 
-function Section({ title, rows }: { title: string; rows: [string, string][] }) {
+function Section({ title, rows, children }: { title: string; rows: [string, string][]; children?: ReactNode }) {
   const filled = rows.filter(([, v]) => v)
-  if (filled.length === 0) return null
+  if (filled.length === 0 && !children) return null
   return (
     <section className="panel">
       <h2>{title}</h2>
@@ -87,6 +104,7 @@ function Section({ title, rows }: { title: string; rows: [string, string][] }) {
           </div>
         ))}
       </dl>
+      {children}
     </section>
   )
 }

@@ -34,6 +34,7 @@ export async function importBackup(file: File): Promise<number> {
   const entries: CoffeeEntry[] = await Promise.all(
     data.coffees.map(async ({ id: _id, ...c }) => ({
       ...c,
+      place: c.place ?? null,
       photo: c.photo ? await dataUrlToBlob(c.photo) : null,
       thumb: c.thumb ? await dataUrlToBlob(c.thumb) : null,
     })),

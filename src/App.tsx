@@ -2,6 +2,7 @@ import { HashRouter, Link, NavLink, Route, Routes } from 'react-router-dom'
 import { CoffeeForm } from './pages/CoffeeForm'
 import { Detail } from './pages/Detail'
 import { Feed } from './pages/Feed'
+import { Nearby } from './pages/Nearby'
 import { Settings } from './pages/Settings'
 import { Stats } from './pages/Stats'
 
@@ -20,6 +21,7 @@ export default function App() {
           <Route path="/new" element={<CoffeeForm />} />
           <Route path="/coffee/:id" element={<Detail />} />
           <Route path="/coffee/:id/edit" element={<CoffeeForm />} />
+          <Route path="/nearby" element={<Nearby />} />
           <Route path="/stats" element={<Stats />} />
           <Route path="/settings" element={<Settings />} />
         </Routes>
@@ -27,6 +29,9 @@ export default function App() {
       <nav className="tabbar">
         <NavLink to="/" end>
           <span aria-hidden="true">☕</span>Feed
+        </NavLink>
+        <NavLink to="/nearby">
+          <span aria-hidden="true">📍</span>Nearby
         </NavLink>
         <NavLink to="/new" className="tab-add">
           <span aria-hidden="true">＋</span>Check in

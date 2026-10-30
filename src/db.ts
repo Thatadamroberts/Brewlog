@@ -1,5 +1,15 @@
 import Dexie, { type EntityTable } from 'dexie'
 
+/** A spot on the map a check-in is tagged with. */
+export interface Place {
+  name: string
+  lat: number
+  lon: number
+  address: string
+  /** OpenStreetMap id such as "node/123", or null for a dropped pin */
+  osm: string | null
+}
+
 export interface CoffeeEntry {
   id?: number
   /** Name of the coffee or bean, e.g. "Kochere Natural" */
@@ -25,6 +35,7 @@ export interface CoffeeEntry {
   price: number | null
   currency: string
   quantity: string
+  place: Place | null
 
   rating: number | null
   notes: string
@@ -46,6 +57,14 @@ export const db = new Dexie('brewlog') as Dexie & {
 db.version(1).stores({
   coffees: '++id, date, name, roaster, origin, drinkType, sourceName, rating, createdAt',
 })
+db.version(2).upgrade((tx) =>
+  tx
+    .table('coffees')
+    .toCollection()
+    .modify((c) => {
+      c.place ??= null
+    }),
+)
 
 export function emptyDraft(): CoffeeDraft {
   return {
@@ -66,6 +85,7 @@ export function emptyDraft(): CoffeeDraft {
     price: null,
     currency: localStorageGet('brewlog.currency') ?? 'USD',
     quantity: '',
+    place: null,
     rating: null,
     notes: '',
     photo: null,

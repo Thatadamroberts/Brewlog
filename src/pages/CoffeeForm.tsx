@@ -2,8 +2,10 @@ import { useLiveQuery } from 'dexie-react-hooks'
 import { cloneElement, useEffect, useId, useRef, useState, type ReactElement } from 'react'
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { useObjectUrl } from '../components/BlobImage'
+import { MapPicker } from '../components/MapPicker'
 import { RatingInput } from '../components/Rating'
-import { db, emptyDraft, saveCoffee, today, type CoffeeDraft } from '../db'
+import { db, emptyDraft, saveCoffee, today, type CoffeeDraft, type Place } from '../db'
+import { mapsUrl, placeFromParam } from '../geo'
 import { processPhoto } from '../image'
 import { CURRENCIES, DRINK_TYPES, PROCESSES, ROAST_LEVELS, SOURCE_TYPES } from '../options'
 
@@ -13,8 +15,15 @@ export function CoffeeForm() {
   const navigate = useNavigate()
   const editId = params.id ? Number(params.id) : undefined
   const copyFrom = search.get('from')
+  const placeParam = search.get('place')
 
-  const [draft, setDraft] = useState<CoffeeDraft | null>(editId || copyFrom ? null : emptyDraft())
+  const [draft, setDraft] = useState<CoffeeDraft | null>(() => {
+    if (editId || copyFrom) return null
+    // "Check in here" from the Nearby screen arrives with a place.
+    const place = placeFromParam(placeParam)
+    return place ? withPlace(emptyDraft(), place) : emptyDraft()
+  })
+  const [picking, setPicking] = useState(false)
   const [photoBusy, setPhotoBusy] = useState(false)
   const [error, setError] = useState('')
   const fileInput = useRef<HTMLInputElement>(null)
@@ -173,6 +182,33 @@ export function CoffeeForm() {
 
       <fieldset className="panel">
         <legend>Where I got it</legend>
+        <div className="place-tag">
+          {draft.place ? (
+            <>
+              <div className="place-tag-info">
+                <span aria-hidden="true">📍</span>
+                <div>
+                  <strong>{draft.place.name}</strong>
+                  <a href={mapsUrl(draft.place)} target="_blank" rel="noreferrer" className="muted">
+                    {draft.place.address || 'Open in Maps'}
+                  </a>
+                </div>
+              </div>
+              <div className="photo-actions">
+                <button type="button" className="btn btn-small" onClick={() => setPicking(true)}>
+                  Change
+                </button>
+                <button type="button" className="btn btn-small" onClick={() => set('place', null)}>
+                  Remove
+                </button>
+              </div>
+            </>
+          ) : (
+            <button type="button" className="btn place-tag-add" onClick={() => setPicking(true)}>
+              📍 Tag a place on the map
+            </button>
+          )}
+        </div>
         <div className="row">
           <Field label="Place / seller">
             <Suggest listId="sourceName" {...text('sourceName')} options={suggestions?.sourceName} />
@@ -218,6 +254,18 @@ export function CoffeeForm() {
         <textarea {...text('notes')} aria-label="Notes" rows={4} placeholder="How was it? Brew recipe, grind, who you were with…" />
       </fieldset>
 
+      {picking && (
+        <MapPicker
+          initial={draft.place}
+          pinName={draft.sourceName}
+          onClose={() => setPicking(false)}
+          onPick={(place) => {
+            setDraft((d) => (d ? withPlace(d, place) : d))
+            setPicking(false)
+          }}
+        />
+      )}
+
       {error && <p className="error">{error}</p>}
       <div className="actions sticky">
         <button type="button" className="btn" onClick={() => navigate(-1)}>
@@ -229,6 +277,19 @@ export function CoffeeForm() {
       </div>
     </form>
   )
+}
+
+/** Tag a place and fill in the source fields it can answer, without overwriting the user's own text. */
+function withPlace(d: CoffeeDraft, place: Place): CoffeeDraft {
+  const prev = d.place
+  const replaceable = (current: string, fromPrev: string | undefined) => !current || current === fromPrev
+  return {
+    ...d,
+    place,
+    sourceName: replaceable(d.sourceName, prev?.name) ? place.name : d.sourceName,
+    sourceLocation: replaceable(d.sourceLocation, prev?.address) ? place.address : d.sourceLocation,
+    sourceType: !d.sourceType && place.osm ? 'Café' : d.sourceType,
+  }
 }
 
 function Field({ label, children }: { label: string; children: ReactElement<{ id?: string }> }) {
