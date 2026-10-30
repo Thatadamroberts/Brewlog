@@ -66,10 +66,10 @@ img { display: block; max-width: 100%; }
   flex: 1; max-width: 120px; padding: 6px; border-radius: 10px;
   font-size: 0.75rem; color: var(--muted);
 }
-.tabbar a span { font-size: 1.25rem; line-height: 1; }
+.tabbar a span { display: grid; place-items: center; height: 32px; font-size: 1.25rem; line-height: 1; }
 .tabbar a.active { color: var(--accent); font-weight: 600; }
 .tabbar .tab-add span {
-  display: grid; place-items: center; width: 36px; height: 36px; border-radius: 50%;
+  width: 32px; border-radius: 50%;
   background: var(--accent); color: var(--accent-text);
 }
 
@@ -135,6 +135,8 @@ input:focus, select:focus, textarea:focus { outline: 2px solid var(--accent); ou
 }
 fieldset.panel { min-width: 0; }
 .panel legend { float: left; width: 100%; padding: 0; margin-bottom: 12px; font-weight: 700; }
+/* Floated legend keeps it inside the box; the next item must start below it. */
+.panel legend + * { clear: both; }
 .field { display: flex; flex-direction: column; gap: 4px; margin-bottom: 12px; min-width: 0; flex: 1; }
 .field > label { font-size: 0.8rem; font-weight: 600; color: var(--muted); }
 .row { display: flex; gap: 12px; }
